@@ -1,0 +1,191 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0;
+}
+
+.content-container {
+  width: 70%;
+  max-width: 1200px;
+  color: #fff;
+}
+
+.video-two {
+
+  width: 60%;
+  
+  /* This centers the container on the page */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Videos */
+.video video,
+.video-two video {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  background: #111;
+}
+.maintittle{ 
+  text-align: center;
+  color: red;
+  margin-top: 10px;
+font-family: "schwarzkopf-new", sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: 48px;
+  
+}
+/* Headings */
+.topheading {
+  text-align: center;
+  color: red;
+  margin: 12px 0 20px 0; /* space below heading */
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-family: Arial, sans-serif;
+}
+
+.bottomheading {
+  text-align: center;
+  color: red;
+  margin: 20px 0 8px 0; /* sits above red line */
+  font-size: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* Divider */
+.divider-line {
+  height: 4px;
+  background: red;
+  width: 100%; 
+  border-radius: 2px;
+  
+  
+  margin: 20px 0;
+}
+
+/* Scroller base styles (all in normal flow now) */
+.image-scroller,
+.image-scroller2,
+.image-scroller3 {
+  position: relative; 
+  width: 100%;
+  height: 80px;
+  margin: 12px 0;
+  overflow: visible; /* allow hover enlargement outside the box */
+  z-index: 10;
+}
+
+/* Inner flex row */
+.scroller-inner,
+.scroller-inner2,
+.scroller-inner3 {
+  display: flex;
+  gap: 15px;
+  width: fit-content;
+  align-items: center;
+  
+  transform: translateZ(0);
+}
+
+/* Animation (only when data-animated=true present) */
+[data-animated="true"] .scroller-inner {
+  animation: scrollRightToLeft 5s linear infinite;
+}
+[data-animated="true"] .scroller-inner2 {
+  animation: scrollLeftToRight 5s linear infinite;
+}
+[data-animated="true"] .scroller-inner3 {
+  animation: scrollRightToLeft 5s linear infinite;
+}
+
+/* Pause on hover so user can inspect */
+.image-scroller:hover .scroller-inner,
+.image-scroller2:hover .scroller-inner2,
+.image-scroller3:hover .scroller-inner3 {
+  animation-play-state: paused;
+}
+
+/* Images */
+.scroller-inner img,
+.scroller-inner2 img,
+.scroller-inner3 img {
+  height: 80px;
+  width: auto;
+  border-radius: 6px;
+  transition: transform 250ms cubic-bezier(.2,.9,.3,1), box-shadow 250ms;
+  cursor: pointer;
+  position: relative; 
+}
+
+/* Hover focus (pleasant zoom) */
+.scroller-inner img:hover,
+.scroller-inner2 img:hover,
+.scroller-inner3 img:hover {
+  transform: scale(5);
+  z-index: 50;
+  box-shadow: 0 10px 30px rgba(255, 0, 0, 0.45);
+}
+
+/* Keyframes for seamless loop (requires duplicated images inside each scroller) */
+@keyframes scrollRightToLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 7.5px)); } /* halves the duplicated row */
+}
+
+@keyframes scrollLeftToRight {
+  from { transform: translateX(calc(-50% - 7.5px)); }
+  to   { transform: translateX(0); }
+}
+
+/* Responsive small screens */
+@media (max-width: 600px) {
+  .image-scroller,
+  .image-scroller2,
+  .image-scroller3 {
+    height: 60px;
+  }
+  .scroller-inner img,
+  .scroller-inner2 img,
+  .scroller-inner3 img {
+    height: 60px;
+  }
+  .content-container { width: 92%; }
+}
+
+
+/* --- NEW STYLES FOR THE VIDEO LIGHTBOX --- */
+
+/* 1. The dark background overlay (starts hidden) */
+#lightbox-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0); /* Dark, semi-transparent */
+  z-index: 999; 
+}
+
+/* 2. The style for the video container WHEN it's enlarged */
+#video-two-container.is-enlarged {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw; 
+  max-width: 1200px; 
+  z-index: 1000; 
+  margin-top: 0; 
+}
