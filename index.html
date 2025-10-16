@@ -8,11 +8,84 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <div class="item item-1">Item 1</div>
-      <div class="item item-2">Item 2</div>
-      <div class="item item-3">Item 3</div>
+    <!-- MUTED BACKGROUND VIDEO -->
+    <video
+      id="background-video"
+      src="videos/News.mp4"
+      autoplay
+      loop
+      muted
+    ></video>
+
+    <!-- TRANSITION OVERLAY -->
+    <div id="video-transition-overlay"></div>
+
+    <!-- IMAGE TICKER FOR SECOND VIDEO -->
+    <div id="bottom-image-ticker" class="hidden">
+      <div class="ticker-track">
+        <img src="Images 5/image 1.png" alt="img1" />
+        <img src="Images 5/image 6.png" alt="img6" />
+        <img src="Images 5/image 2.png" alt="img2" />
+        <img src="Images 5/image 3.png" alt="img3" />
+        <img src="Images 5/image 5.png" alt="img5" />
+        <img src="Images 5/image 4.png" alt="img4" />
+        <img src="Images 5/image 6.png" alt="img6" />
+        <img src="Images 5/image 1.png" alt="img1" />
+        <img src="Images 5/image 2.png" alt="img2" />
+        <img src="Images 5/image 5.png" alt="img5" />
+        <img src="Images 5/image 3.png" alt="img3" />
+        <img src="Images 5/image 2.png" alt="img2" />
+        <img src="Images 5/image 3.png" alt="img3" />
+        <img src="Images 5/image 4.png" alt="img4" />
+        <img src="Images 5/image 6.png" alt="img6" />
+      </div>
     </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content-wrapper">
+      <div class="layout-container">
+        <div class="video-panel">
+          <!-- PANEL VIDEO PLAYS WITH SOUND -->
+          <video id="panel-video" src="videos/News.mp4" autoplay loop></video>
+        </div>
+
+        <div class="image-panel">
+          <div class="slider-vertical">
+            <div class="slide-set">
+              <img src="Images 6/Image 1.png" alt="news 1" />
+              <img src="Images 6/Image 2.png" alt="news 2" />
+              <img src="Images 6/Image 3.png" alt="news 3" />
+              <img src="Images 6/Image 7.png" alt="news 7" />
+              <img src="Images 6/Image 8.png" alt="news 8" />
+              <img src="Images 6/Image 4.png" alt="news 4" />
+            </div>
+            <div class="slide-set">
+              <img src="Images 6/Image 5.png" alt="news 5" />
+              <img src="Images 6/Image 6.png" alt="news 6" />
+              <img src="Images 6/Image 7.png" alt="news 7" />
+              <img src="Images 6/Image 8.png" alt="news 8" />
+              <img src="Images 6/Image 9.png" alt="news 9" />
+            </div>
+          </div>
+        </div>
+
+        <div class="headline-bar">
+          <h1>Norfolk Southern Train Derails</h1>
+        </div>
+
+        <div class="ticker-panel">
+          <div class="ticker-track">
+            <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
+            <img src="Images/derailment image 2.jpg" alt="image 2" />
+            <img src="Images/derailment image 3.jpg" alt="image 3" />
+            <img src="Images/derailment image 4.jpg" alt="image 4" />
+            <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
+            <img src="Images/derailment image 2.jpg" alt="image 2" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
-edit
