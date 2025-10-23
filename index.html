@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- MUTED BACKGROUND VIDEO -->
+    <!-- BACKGROUND VIDEO -->
     <video
       id="background-video"
       src="videos/News.mp4"
@@ -17,70 +17,137 @@
       muted
     ></video>
 
-    <!-- TRANSITION OVERLAY -->
-    <div id="video-transition-overlay"></div>
-
-    <!-- IMAGE TICKER FOR SECOND VIDEO -->
-    <div id="bottom-image-ticker" class="hidden">
-      <div class="ticker-track">
-        <img src="Images 5/image 1.png" alt="img1" />
-        <img src="Images 5/image 6.png" alt="img6" />
-        <img src="Images 5/image 2.png" alt="img2" />
-        <img src="Images 5/image 3.png" alt="img3" />
-        <img src="Images 5/image 5.png" alt="img5" />
-        <img src="Images 5/image 4.png" alt="img4" />
-        <img src="Images 5/image 6.png" alt="img6" />
-        <img src="Images 5/image 1.png" alt="img1" />
-        <img src="Images 5/image 2.png" alt="img2" />
-        <img src="Images 5/image 5.png" alt="img5" />
-        <img src="Images 5/image 3.png" alt="img3" />
-        <img src="Images 5/image 2.png" alt="img2" />
-        <img src="Images 5/image 3.png" alt="img3" />
-        <img src="Images 5/image 4.png" alt="img4" />
-        <img src="Images 5/image 6.png" alt="img6" />
-      </div>
-    </div>
-
     <!-- MAIN CONTENT -->
     <div class="content-wrapper">
       <div class="layout-container">
-        <div class="video-panel">
-          <!-- PANEL VIDEO PLAYS WITH SOUND -->
-          <video id="panel-video" src="videos/News.mp4" autoplay loop></video>
-        </div>
+        <!-- LEFT SECTION -->
+        <div class="left-section">
+          <!-- Video -->
+          <div class="video-panel">
+            <video
+              id="panel-video"
+              src="videos/News.mp4"
+              autoplay
+              controls
+              autoplay
+              loop
+            ></video>
+          </div>
 
-        <div class="image-panel">
-          <div class="slider-vertical">
-            <div class="slide-set">
-              <img src="Images 6/Image 1.png" alt="news 1" />
-              <img src="Images 6/Image 2.png" alt="news 2" />
-              <img src="Images 6/Image 3.png" alt="news 3" />
-              <img src="Images 6/Image 7.png" alt="news 7" />
-              <img src="Images 6/Image 8.png" alt="news 8" />
-              <img src="Images 6/Image 4.png" alt="news 4" />
+          <!-- Headline Bar -->
+          <div class="headline-bar">
+            <h1>Norfolk Southern Train Derails</h1>
+          </div>
+
+          <!-- Image Ticker -->
+          <div class="ticker-panel">
+            <div class="ticker-track">
+              <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
+              <img src="Images/derailment image 2.jpg" alt="image 2" />
+              <img src="Images/derailment image 3.jpg" alt="image 3" />
+              <img src="Images/derailment image 4.jpg" alt="image 4" />
+              <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
+              <img src="Images/derailment image 2.jpg" alt="image 2" />
+              <img src="Images/derailment image 3.jpg" alt="image 3" />
+              <img src="Images/derailment image 4.jpg" alt="image 4" />
+              <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
             </div>
-            <div class="slide-set">
-              <img src="Images 6/Image 5.png" alt="news 5" />
-              <img src="Images 6/Image 6.png" alt="news 6" />
-              <img src="Images 6/Image 7.png" alt="news 7" />
-              <img src="Images 6/Image 8.png" alt="news 8" />
-              <img src="Images 6/Image 9.png" alt="news 9" />
-            </div>
+          </div>
+
+          <!-- Word Ticker -->
+          <div class="word-ticker">
+            <p id="ticker-text">
+              On February 3, 2023, a Norfolk Southern train derailment in East
+              Palestine, Ohio, escalated into a major environmental and public
+              health crisis. The train was carrying hazardous materials,
+              including vinyl chloride, which were released into the atmosphere
+              through a controversial "controlled vent and burn" to prevent a
+              larger explosion. This action forced thousands to evacuate and
+              created a toxic plume containing phosgene and hydrogen chloride.
+              The disaster had immediate and severe consequences. Residents
+              reported a variety of health problems, from respiratory issues to
+              skin rashes, sparking long-term fears of chronic illnesses like
+              cancer. The chemical spill also devastated the local ecosystem,
+              contaminating waterways, killing thousands of fish, and
+              necessitating a massive, ongoing cleanup of soil and water.
+              Politically, the derailment became a symbol of failed regulatory
+              oversight and corporate negligence. It ignited a national debate
+              on railroad safety and deregulation, leading to widespread
+              criticism of the response from both government agencies and
+              Norfolk Southern. The event ultimately prompted a bipartisan
+              effort in Congress to enact stricter railway safety laws to
+              prevent future catastrophes.
+            </p>
+            <p id="ticker-text">
+              On February 3, 2023, a Norfolk Southern train derailment in East
+              Palestine, Ohio, escalated into a major environmental and public
+              health crisis. The train was carrying hazardous materials,
+              including vinyl chloride, which were released into the atmosphere
+              through a controversial "controlled vent and burn" to prevent a
+              larger explosion. This action forced thousands to evacuate and
+              created a toxic plume containing phosgene and hydrogen chloride.
+              The disaster had immediate and severe consequences. Residents
+              reported a variety of health problems, from respiratory issues to
+              skin rashes, sparking long-term fears of chronic illnesses like
+              cancer. The chemical spill also devastated the local ecosystem,
+              contaminating waterways, killing thousands of fish, and
+              necessitating a massive, ongoing cleanup of soil and water.
+              Politically, the derailment became a symbol of failed regulatory
+              oversight and corporate negligence. It ignited a national debate
+              on railroad safety and deregulation, leading to widespread
+              criticism of the response from both government agencies and
+              Norfolk Southern. The event ultimately prompted a bipartisan
+              effort in Congress to enact stricter railway safety laws to
+              prevent future catastrophes.
+            </p>
           </div>
         </div>
 
-        <div class="headline-bar">
-          <h1>Norfolk Southern Train Derails</h1>
-        </div>
-
-        <div class="ticker-panel">
-          <div class="ticker-track">
-            <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
-            <img src="Images/derailment image 2.jpg" alt="image 2" />
-            <img src="Images/derailment image 3.jpg" alt="image 3" />
-            <img src="Images/derailment image 4.jpg" alt="image 4" />
-            <img src="Images/derailment image 1.jpg" alt="Train Derailment" />
-            <img src="Images/derailment image 2.jpg" alt="image 2" />
+        <!-- RIGHT SECTION -->
+        <div class="image-panel">
+          <div class="slider-vertical">
+            <div class="slide-set">
+              <a
+                href="https://www.ntsb.gov/news/press-releases/Pages/NR20240625.aspx"
+                ><img src="Images 6/Image 1.png" alt="news 1"
+              /></a>
+              <a
+                href="https://www.cnn.com/2023/02/25/us/ohio-train-derailment-bearing-vibration"
+                ><img src="Images 6/Image 2.png" alt="news 2"
+              /></a>
+              <a
+                href="https://www.cnn.com/2023/02/23/us/ohio-train-derailment-east-palestine-thursday"
+              >
+                <img src="Images 6/Image 3.png" alt="news 3"
+              /></a>
+              <a
+                href="https://www.nytimes.com/article/ohio-train-derailment.html"
+                ><img src="Images 6/Image 4.png" alt="news 4"
+              /></a>
+            </div>
+            <div class="slide-set">
+              <a
+                href="https://www.nytimes.com/2024/05/23/business/east-palestine-ohio-train-derailment-settlement.html"
+                ><img src="Images 6/Image 5.png" alt="news 5"
+              /></a>
+              <a
+                href="https://www.msnbc.com/opinion/msnbc-opinion/east-palestine-ohio-norfolk-southern-demands-rcna73796"
+              >
+                <img src="Images 6/Image 6.png" alt="news 6"
+              /></a>
+              <a
+                href="https://www.theguardian.com/us-news/2025/aug/25/union-pacific-norfolk-southern-railroad-merger"
+                ><img src="Images 6/Image 7.png" alt="news 7"
+              /></a>
+              <a
+                href="https://www.newyorker.com/news/dispatch/east-palestine-after-the-crash"
+                ><img src="Images 6/Image 8.png" alt="news 8"
+              /></a>
+            </div>
+          </div>
+          <!-- TOGGLE BUTTON -->
+          <div class="toggle-button-container">
+            <a href="2 index.html" class="toggle-button">TOGGLE</a>
           </div>
         </div>
       </div>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Train Derailments</title>
+    <link rel="stylesheet" href="https://use.typekit.net/ote5cci.css" />
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+
+  <body>
+    <!-- BACKGROUND VIDEO -->
+    <video
+      id="background-video"
+      src="Videos/East Palestine Train Derailment_V2.mp4"
+      autoplay
+      loop
+      muted
+      playsinline
+    ></video>
+
+    <!-- MAIN CONTENT -->
+    <div class="content-wrapper">
+      <div class="layout-container">
+        <!-- LEFT SECTION -->
+        <div class="left-section">
+          <div class="video-panel">
+            <video
+              id="panel-video"
+              src="Videos/East Palestine Train Derailment_V2.mp4"
+              controls
+              autoplay
+              loop
+              muted
+            ></video>
+          </div>
+
+          <div class="headline-bar">
+            <h1>NORFOLK SOUTHERN TRAIN DERAILS</h1>
+          </div>
+
+          <div class="ticker-panel">
+            <div class="ticker-track">
+              <img src="Images 7/image 1.png" alt="image 1" />
+              <img src="Images 7/image 2.png" alt="image 2" />
+              <img src="Images 7/image 3.png" alt="image 3" />
+              <img src="Images 7/image 5.png" alt="image 5" />
+              <img src="Images 7/image 4.png" alt="image 4" />
+
+              <img src="Images 7/image 1.png" alt="image 1" />
+              <img src="Images 7/image 2.png" alt="image 2" />
+              <img src="Images 7/image 3.png" alt="image 3" />
+              <img src="Images 7/image 5.png" alt="image 5" />
+              <img src="Images 7/image 4.png" alt="image 4" />
+            </div>
+          </div>
+
+          <div class="word-ticker">
+            <p id="ticker-text">
+              Train 32 of Norfolk Southern 7 was en route from Madison, Illinois
+              to Conway, Pennsylvania and comprised of 149 rail cars. Continuing
+              its journey on the Fort Wain rail line, the train derailed in East
+              Palestine, Ohio, on February 3rd, around 9 p.m. due to an increase
+              of pressure on the wheel.
+            </p>
+            <p id="ticker-text">
+              Train 32 of Norfolk Southern 7 was en route from Madison, Illinois
+              to Conway, Pennsylvania and comprised of 149 rail cars. Continuing
+              its journey on the Fort Wain rail line, the train derailed in East
+              Palestine, Ohio, on February 3rd, around 9 p.m. due to an increase
+              of pressure on the wheel.
+            </p>
+          </div>
+        </div>
+
+        <div class="right-panel-container">
+          <!-- HORIZONTAL SLIDER -->
+          <div
+            class="right-box horizontal-slider"
+            draggable="true"
+            data-box-id="slider"
+          >
+            <div class="drag-handle">☰</div>
+
+            <div class="horizontal-set">
+              <img src="Images 11/image 1.png" alt="image 1" />
+              <img src="Images 11/image 2.png" alt="image 2" />
+              <img src="Images 11/image 3.png" alt="image 3" />
+              <img src="Images 11/image 4.png" alt="image 4" />
+              <img src="Images 11/image 5.png" alt="image 5" />
+              <img src="Images 11/image 6.png" alt="image 6" />
+              <img src="Images 11/image 7.png" alt="image 7" />
+              <img src="Images 11/image 8.png" alt="image 8" />
+              <img src="Images 11/image 9.png" alt="image 9" />
+            </div>
+            <div class="resize-handle"></div>
+          </div>
+
+          <!-- HOVER SIGN -->
+          <div
+            class="right-box hoversign"
+            draggable="true"
+            data-box-id="hoversign"
+          >
+            <div class="drag-handle">☰</div>
+
+            <div class="hover-sign">
+              <h1>VIEW DRAWINGS</h1>
+              <img id="hover-preview" src="" alt="preview" />
+            </div>
+            <div class="resize-handle"></div>
+          </div>
+
+          <!-- BOTTOM VIDEO -->
+          <div
+            class="right-box bottom-video"
+            draggable="true"
+            data-box-id="bottomvideo"
+          >
+            <div class="drag-handle">☰</div>
+            <div class="bottomvid">
+              <video controls autoplay src="Videos/News.mp4"></video>
+            </div>
+            <div class="resize-handle"></div>
+          </div>
+
+          <!-- TOGGLE BUTTON -->
+          <div class="toggle-button-container">
+            <a href="index.html" class="toggle-button">TOGGLE</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="reset-layout"
+      style="
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        z-index: 100;
+        background: red;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      "
+    >
+      Reset Layout
+    </button>
+
+    <script src="script2.js"></script>
+  </body>
+</html>

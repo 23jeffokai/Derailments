@@ -25,87 +25,141 @@ body {
   opacity: 0.8;
 }
 
-/* WRAPPER */
+/* CONTENT WRAPPER */
 .content-wrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-}
-
-/* GRID LAYOUT */
-.layout-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 3fr 1fr;
-  gap: 1vw;
-  padding: 1vw;
-  width: 90vw;
-  height: auto;
-  aspect-ratio: 16 / 9;
   
 }
 
-/* SHARED PANEL STYLES */
+/* MAIN GRID LAYOUT */
+.layout-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr;
+  width: 90vw;
+  height: 90vh;
+  gap: 1vw; /* ✅ small gap between left and right */
+}
+
+/* LEFT SECTION WITH WHITE BORDER */
+.left-section {
+  display: grid;
+  grid-template-rows: 1fr auto auto auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* PANELS INSIDE LEFT SECTION */
 .video-panel,
-.image-panel,
-.ticker-panel {
-  background-color: rgba(255, 255, 255, 0.35);
-  border: 2px solid #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.headline-bar,
+.ticker-panel,
+.word-ticker {
+  width: 100%;
   overflow: hidden;
 }
 
 /* VIDEO PANEL */
-.video-panel {
-  grid-column: 1;
-  grid-row: 1;
-}
 .video-panel video {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+/* HEADLINE BAR */
+.headline-bar {
+  background: rgb(200, 0, 0);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  padding: 0.4rem;
+}
+
+/* IMAGE TICKER */
+.ticker-panel {
+  background: rgba(0, 0, 0, 0.3);
+}
+.ticker-track {
+  display: flex;
+  gap: 1rem;
+  animation: scrollTicker 10s linear infinite;
+}
+.ticker-track img {
+  height: 12vh;
+  width: auto;
   object-fit: contain;
 }
-
-/* IMAGE PANEL WITH VERTICAL SLIDER */
-.image-panel {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  overflow: hidden;
-  border: 2px solid white;
-  background-color: rgba(255, 255, 255, 0.1);
+@keyframes scrollTicker {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
-/* Vertical slider container */
-.slider-vertical {
+/* WORD TICKER */
+.word-ticker {
+  height: 5vh;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
   display: flex;
-  flex-direction: column;
-  height: 200%; /* two sets stacked vertically */
-  animation: slideVertical 12s infinite ease-in-out;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* In style.css */
+#ticker-text {
+  display: inline-block;
+  padding-left: 100%; /* This pushes the text to start at the right edge */
+  /* The animation now starts from 0, not 100% */
+  animation: scrollWords 150s linear infinite; 
 }
 
-/* Each slide set: 4 images stacked vertically */
-.slide-set {
-  flex: 1;
+@keyframes scrollWords {
+  from {
+    transform: translateX(0); /* Start from its padded position */
+  }
+  to {
+    /* This transform needs to move the text by its full width + the 100% padding */
+    /* A simple -100% might not be enough if the text is long. */
+    /* A safer bet is to move it by a very large negative amount */
+    transform: translateX(-150%); /* Adjust as needed */
+  }
+}
+
+/* RIGHT SECTION (IMAGE + MORE) */
+.image-panel {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.3rem;
-  gap: 0.3rem;
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
+/* Vertical image slider */
+.slider-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+  animation: slideVertical 10s infinite ease-in-out;
+}
 .slide-set img {
   flex: 1;
   width: 100%;
   object-fit: cover;
-  border: 2px solid #ffffff;
+  border-bottom: 1px solid white;
 }
-
-/* Animation for vertical sliding */
 @keyframes slideVertical {
   0%, 40% {
     transform: translateY(0);
@@ -118,158 +172,55 @@ body {
   }
 }
 
-/* HEADLINE BAR */
-.headline-bar {
-  grid-column: 1;
-  grid-row: 1;
-  align-self: end;
+
+
+/* ===== SOFT WHITE GLOW AROUND LEFT SECTION ===== */
+.left-section {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* soft glow */
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+/* Optional subtle pulsing effect */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Uncomment this if you want a continuous gentle pulse: */
+/*
+.left-section {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+*/
+
+/* TOGGLE BUTTON (inside image panel) */
+.toggle-button-container {
+  position: absolute;
+  bottom: 5%;
+  left: 80%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.toggle-button {
+  display: inline-block;
   background-color: rgb(200, 0, 0);
   color: white;
-  text-align: center;
-  font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
-  position: relative;
-  z-index: 5;
-  transform: translateY(20px);
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 2px solid white;
+  transition: all 0.3s ease-in-out;
 }
 
-/* TICKER PANEL */
-.ticker-panel {
-  grid-column: 1;
-  grid-row: 2;
-  overflow: hidden;
-}
-.ticker-track {
-  display: flex;
-  gap: 1rem;
-  animation: scroll 5s linear infinite;
-}
-.ticker-panel:hover .ticker-track {
-  animation-play-state: paused;
-}
-.ticker-track img {
-  height: 50vh;
-  width: auto;
-  object-fit: contain;
-}
-@keyframes scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
+.toggle-button:hover {
+  background-color: rgb(255, 50, 50);
 
-/* FADE OUT / IN ANIMATIONS */
-.fade-out {
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
-}
-
-.fade-in {
-  opacity: 1;
-  transition: opacity 2s ease-in-out;
-}
-/* Smooth overlay fade-to-black transition */
-#video-transition-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
-  z-index: 1;
-}
-
-#video-transition-overlay.active {
-  opacity: 1;
-}
-
-
-/* RESPONSIVE ADJUSTMENTS */
-@media (max-width: 900px) {
-  .layout-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr auto;
-    aspect-ratio: unset;
-    height: 100%;
-    width: 95vw;
-  }
-
-  .image-panel {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .ticker-panel {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .ticker-track img {
-    height: 12vh;
-  }
-}
-
-/* BOTTOM IMAGE TICKER */
-#bottom-image-ticker {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 12vh;
-  overflow: hidden;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
-}
-
-/* Make ticker visible (slides up and fades in) */
-#bottom-image-ticker.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Track that moves from right → left endlessly */
-.ticker-track {
-  display: flex;
-  gap: 2rem;
-  animation: ticker-scroll 25s linear infinite;
-  will-change: transform;
-}
-
-/* Images inside ticker */
-.ticker-track img {
-  height: 10vh;
-  width: auto;
-  border: none;
-  outline: none;
-  box-shadow: none;
-  object-fit: cover;
-}
-
-/* Right-to-left continuous scroll */
-@keyframes ticker-scroll {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-/* Optional: initially hidden */
-.hidden {
-  display: none;
 }

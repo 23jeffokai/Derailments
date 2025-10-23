@@ -1,69 +1,32 @@
+// Ensure tickers start smoothly and synchronously on page load
+window.addEventListener("load", () => {
+  const imageTicker = document.querySelector(".ticker-track");
+  const wordTicker = document.getElementById("ticker-text");
 
-setTimeout(() => {
-  const content = document.querySelector(".content-wrapper");
-  const backgroundVideo = document.getElementById("background-video");
-  const panelVideo = document.getElementById("panel-video");
-  const overlay = document.getElementById("video-transition-overlay");
-  const bottomTicker = document.getElementById("bottom-image-ticker");
+  // Sync both ticker speeds (optional)
+  const scrollDuration = 45000; // match CSS 45s for image ticker
+  imageTicker.style.animationDuration = `${scrollDuration / 1000}s`;
 
- 
-  content.classList.add("fade-out");
+  // Word ticker scrolls slower (CSS handles its 120s speed)
+  wordTicker.style.animationPlayState = "running";
+});
+// === LOAD COPIED BOXES IF PRESENT ===
+window.addEventListener('DOMContentLoaded', () => {
+  const rightPanel = document.querySelector('.right-panel-container');
+  const copied = JSON.parse(localStorage.getItem('boxesToCopy'));
 
-  
-  setTimeout(() => {
-    overlay.style.backgroundColor = "white";
-    overlay.style.opacity = 1;
+  if (!copied || copied.length === 0) return;
 
-    setTimeout(() => {
-      overlay.style.backgroundColor = "black";
-    }, 200); // short white flash
-  }, 1200);
+  copied
+    .sort((a, b) => a.order - b.order) // keep original vertical order
+    .forEach(boxData => {
+      const temp = document.createElement('div');
+      temp.innerHTML = boxData.html.trim();
+      const clonedBox = temp.firstChild;
 
-  
-  let fadeInterval = setInterval(() => {
-    if (panelVideo.volume > 0.05) {
-      panelVideo.volume -= 0.05;
-    } else {
-      panelVideo.volume = 0;
-      clearInterval(fadeInterval);
-      panelVideo.pause();
-      panelVideo.currentTime = 0;
-      panelVideo.removeAttribute("src");
-      panelVideo.load(); // ensures it's completely stopped
-    }
-  }, 100); 
-
-  
-  setTimeout(() => {
-    backgroundVideo.pause();
-    backgroundVideo.src = "videos/East Palestine Train Derailment_V2.mp4";
-    backgroundVideo.muted = false;
-    backgroundVideo.loop = true;
-    backgroundVideo.volume = 0; 
-    backgroundVideo.load();
-    backgroundVideo.play().catch(err => {
-      console.warn("Autoplay with sound blocked by browser:", err);
+      // Ensure the same height & layout
+      clonedBox.style.height = boxData.height;
+      rightPanel.insertBefore(clonedBox, rightPanel.children[boxData.order] || null);
     });
-
-   
-    let fadeIn = setInterval(() => {
-      if (backgroundVideo.volume < 1.0) {
-        backgroundVideo.volume = Math.min(backgroundVideo.volume + 0.05, 1.0);
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 100);
-  }, 3500);
-
-  setTimeout(() => {
-    overlay.style.opacity = 0;
-
-    if (bottomTicker) {
-      bottomTicker.classList.remove("hidden");
-      setTimeout(() => {
-        bottomTicker.classList.add("visible");
-      }, 500);
-    }
-  }, 5000);
-
-}, 18000); 
+});
+localStorage.removeItem('boxesToCopy');
