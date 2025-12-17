@@ -1,2 +1,1 @@
-# Derailments
-Analysis of train derailment in East Palestine Ohio
+An interactive multimedia documentation website examining the February 3, 2023 Norfolk Southern train derailment in East Palestine, Ohio. This project combines news broadcast aesthetics with interactive elements to present the environmental and public health crisis caused by the hazardous materials release.

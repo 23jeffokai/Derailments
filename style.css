@@ -117,12 +117,12 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-/* In style.css */
-#ticker-text {
+/* Word ticker text animation */
+.ticker-text {
   display: inline-block;
   padding-left: 100%; /* This pushes the text to start at the right edge */
   /* The animation now starts from 0, not 100% */
-  animation: scrollWords 150s linear infinite; 
+  animation: scrollWords 150s linear infinite;
 }
 
 @keyframes scrollWords {

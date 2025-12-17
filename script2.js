@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   // === LEFT PANEL TICKERS ===
   const imageTicker = document.querySelector(".left-section .ticker-track");
-  const wordTicker = document.getElementById("ticker-text");
+  const wordTickers = document.querySelectorAll(".ticker-text");
 
   if (imageTicker) imageTicker.style.animationDuration = "45s";
-  if (wordTicker) wordTicker.style.animationPlayState = "running";
+  if (wordTickers.length > 0) {
+    wordTickers.forEach(ticker => {
+      ticker.style.animationPlayState = "running";
+    });
+  }
 
   // === Horizontal slider pause on hover ===
   const horizontalSet = document.querySelector(".horizontal-set");
@@ -60,18 +64,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewImg = document.getElementById("hover-preview");
   if (tickerImages && hoverSign && previewImg) {
     const previewMap = {
-      "image 1.png": "image 10/image 2.png",
-      "image 2.png": "image 10/image 1.png",
-      "image 3.png": "image 10/image 3.png",
-      "image 4.png": "image 10/image 4.png",
-      "image 5.png": "image 10/image 5.png",
+      "image 1.png": "Images 5/image 1.png",
+      "image 2.png": "Images 5/image 2.png",
+      "image 3.png": "Images 5/image 3.png",
+      "image 4.png": "Images 5/image 4.png",
+      "image 5.png": "Images 5/image 5.png",
     };
     tickerImages.forEach((img) => {
       img.addEventListener("mouseenter", () => {
         const fileName = img.getAttribute("src").split("/").pop();
-        const previewPath = previewMap[fileName] || "Images 11/default.png";
-        previewImg.src = previewPath;
-        hoverSign.classList.add("show-preview");
+        const previewPath = previewMap[fileName];
+        if (previewPath) {
+          previewImg.src = previewPath;
+          hoverSign.classList.add("show-preview");
+        }
       });
       img.addEventListener("mouseleave", () => {
         hoverSign.classList.remove("show-preview");
@@ -86,20 +92,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let draggedBox = null;
   let isResizing = false;
+  let currentResizingBox = null;
   let startY = 0;
   let startHeight = 0;
+  let placeholder = null;
 
   // --- LOAD SAVED STATE ---
-  const savedLayout = JSON.parse(localStorage.getItem('rightPanelLayout'));
-  if (savedLayout) {
-    savedLayout.order.forEach(id => {
-      const el = document.querySelector(`[data-box-id="${id}"]`);
-      if (el) container.appendChild(el);
-    });
-    savedLayout.heights.forEach(({ id, height }) => {
-      const el = document.querySelector(`[data-box-id="${id}"]`);
-      if (el) el.style.height = height;
-    });
+  try {
+    const savedLayout = JSON.parse(localStorage.getItem('rightPanelLayout'));
+    if (savedLayout && savedLayout.order && savedLayout.heights) {
+      savedLayout.order.forEach(id => {
+        const el = document.querySelector(`[data-box-id="${id}"]`);
+        if (el) container.appendChild(el);
+      });
+      savedLayout.heights.forEach(({ id, height }) => {
+        const el = document.querySelector(`[data-box-id="${id}"]`);
+        if (el) el.style.height = height;
+      });
+    }
+  } catch (error) {
+    console.warn('Failed to load saved layout:', error);
+    localStorage.removeItem('rightPanelLayout');
+  }
+
+  // --- CREATE PLACEHOLDER ---
+  function createPlaceholder() {
+    const div = document.createElement('div');
+    div.className = 'drag-placeholder';
+    div.style.cssText = `
+      border: 2px dashed rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      margin: 5px 0;
+      transition: all 0.2s ease;
+    `;
+    return div;
   }
 
   // --- DRAGGING ---
@@ -108,30 +134,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const handle = box.querySelector('.drag-handle');
     if (!handle) return;
 
-    handle.addEventListener('mousedown', () => {
+    // Make box draggable via handle
+    box.setAttribute('draggable', 'false');
+
+    handle.addEventListener('mousedown', (e) => {
+      // Don't interfere with resize
+      if (isResizing) return;
+      box.setAttribute('draggable', 'true');
+    });
+
+    box.addEventListener('dragstart', (e) => {
       draggedBox = box;
       box.classList.add('dragging');
-    });
 
-    handle.addEventListener('mouseup', () => {
-      if (draggedBox) {
-        box.classList.remove('dragging');
-        draggedBox = null;
-        saveLayout();
-      }
-    });
+      // Create and show placeholder
+      placeholder = createPlaceholder();
+      placeholder.style.height = `${box.offsetHeight}px`;
 
-    handle.addEventListener('dragstart', (e) => {
+      // Set drag image to be semi-transparent
       e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', '');
+      e.dataTransfer.setData('text/html', box.innerHTML);
+
+      // Add slight delay to show dragging state
+      setTimeout(() => {
+        box.style.opacity = '0.5';
+      }, 0);
     });
 
-    handle.addEventListener('dragend', () => {
-      if (draggedBox) {
+    box.addEventListener('dragend', (e) => {
+      // Add a subtle scale-in animation when dropped
+      box.style.transform = 'scale(0.98)';
+
+      setTimeout(() => {
         box.classList.remove('dragging');
-        draggedBox = null;
-        saveLayout();
+        box.style.opacity = '1';
+        box.style.transform = '';
+        box.setAttribute('draggable', 'false');
+      }, 50);
+
+      // Remove placeholder
+      if (placeholder && placeholder.parentNode) {
+        placeholder.parentNode.removeChild(placeholder);
       }
+
+      draggedBox = null;
+      placeholder = null;
+      saveLayout();
     });
 
     // --- RESIZING ---
@@ -140,57 +188,129 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resizeHandle.addEventListener('mousedown', (e) => {
       e.preventDefault();
+      e.stopPropagation();
+
+      // Disable dragging during resize
+      box.setAttribute('draggable', 'false');
+
       isResizing = true;
+      currentResizingBox = box;
       startY = e.clientY;
       startHeight = box.offsetHeight;
+
       document.body.style.cursor = 'ns-resize';
-    });
+      document.body.style.userSelect = 'none';
 
-    window.addEventListener('mousemove', (e) => {
-      if (!isResizing) return;
-      const newHeight = startHeight + (e.clientY - startY);
-      box.style.height = `${Math.max(100, newHeight)}px`;
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (isResizing) {
-        isResizing = false;
-        document.body.style.cursor = 'default';
-        saveLayout();
-      }
+      // Add visual feedback
+      box.classList.add('resizing');
+      resizeHandle.style.background = 'rgba(0, 255, 255, 0.8)';
     });
   });
 
+  // Global resize move handler
+  window.addEventListener('mousemove', (e) => {
+    if (!isResizing || !currentResizingBox) return;
+
+    const deltaY = e.clientY - startY;
+    const newHeight = startHeight + deltaY;
+
+    // Set min and max constraints
+    const minHeight = 100;
+    const maxHeight = window.innerHeight * 0.8;
+    const constrainedHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+
+    currentResizingBox.style.height = `${constrainedHeight}px`;
+
+    // Smooth transition
+    requestAnimationFrame(() => {
+      currentResizingBox.style.transition = 'none';
+    });
+  });
+
+  // Global resize end handler
+  window.addEventListener('mouseup', () => {
+    if (isResizing && currentResizingBox) {
+      isResizing = false;
+
+      document.body.style.cursor = 'default';
+      document.body.style.userSelect = 'auto';
+
+      // Remove visual feedback
+      currentResizingBox.classList.remove('resizing');
+      const resizeHandle = currentResizingBox.querySelector('.resize-handle');
+      if (resizeHandle) {
+        resizeHandle.style.background = '';
+      }
+
+      // Re-enable transitions
+      currentResizingBox.style.transition = '';
+
+      saveLayout();
+      currentResizingBox = null;
+    }
+  });
+
+  // --- DRAG OVER CONTAINER ---
   container.addEventListener('dragover', (e) => {
     e.preventDefault();
+    if (!draggedBox) return;
+
     const afterElement = getDragAfterElement(container, e.clientY);
-    if (draggedBox) {
-      if (afterElement == null) container.appendChild(draggedBox);
-      else container.insertBefore(draggedBox, afterElement);
+    const currentBoxes = [...container.querySelectorAll('.right-box:not(.dragging)')];
+
+    // Remove old placeholder
+    if (placeholder && placeholder.parentNode) {
+      placeholder.parentNode.removeChild(placeholder);
+    }
+
+    // Insert placeholder at correct position
+    if (afterElement == null) {
+      container.appendChild(placeholder);
+    } else {
+      container.insertBefore(placeholder, afterElement);
+    }
+  });
+
+  container.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (!draggedBox || !placeholder) return;
+
+    // Insert dragged box where placeholder is
+    if (placeholder.parentNode) {
+      placeholder.parentNode.insertBefore(draggedBox, placeholder);
+      placeholder.parentNode.removeChild(placeholder);
     }
   });
 
   function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('.right-box:not(.dragging)')];
+
     return draggableElements.reduce(
       (closest, child) => {
         const box = child.getBoundingClientRect();
         const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset)
+
+        if (offset < 0 && offset > closest.offset) {
           return { offset: offset, element: child };
-        else return closest;
+        } else {
+          return closest;
+        }
       },
       { offset: Number.NEGATIVE_INFINITY }
     ).element;
   }
 
   function saveLayout() {
-    const order = [...container.querySelectorAll('.right-box')].map(el => el.dataset.boxId);
-    const heights = [...container.querySelectorAll('.right-box')].map(el => ({
-      id: el.dataset.boxId,
-      height: el.style.height || `${el.offsetHeight}px`
-    }));
-    localStorage.setItem('rightPanelLayout', JSON.stringify({ order, heights }));
+    try {
+      const order = [...container.querySelectorAll('.right-box')].map(el => el.dataset.boxId);
+      const heights = [...container.querySelectorAll('.right-box')].map(el => ({
+        id: el.dataset.boxId,
+        height: el.style.height || `${el.offsetHeight}px`
+      }));
+      localStorage.setItem('rightPanelLayout', JSON.stringify({ order, heights }));
+    } catch (error) {
+      console.warn('Failed to save layout:', error);
+    }
   }
 
   // --- RESET BUTTON ---

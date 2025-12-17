@@ -115,12 +115,12 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-/* In style.css */
-#ticker-text {
+/* Word ticker text animation */
+.ticker-text {
   display: inline-block;
   padding-left: 100%; /* This pushes the text to start at the right edge */
   /* The animation now starts from 0, not 100% */
-  animation: scrollWords 150s linear infinite; 
+  animation: scrollWords 150s linear infinite;
 }
 
 @keyframes scrollWords {
@@ -247,35 +247,36 @@ body {
 
 /* ===== HOVER SIGN IMAGE PREVIEW ===== */
 .hover-sign {
-   position: relative;
+  position: relative;
   overflow: visible; /* let images grow beyond the box vertically */
 }
 
 #hover-preview {
-   position: absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
-  width: 140%; /* wider than the hover-sign box */
-  height: 400%; /* taller than the hover-sign box */
+  width: auto; /* auto width to maintain aspect ratio */
+  height: auto; /* auto height to maintain aspect ratio */
+  max-width: 200%; /* allow image to be larger than container */
+  max-height: 500%; /* allow tall images to extend vertically */
   transform: translate(-50%, -50%) scale(0.95);
-  object-fit: cover;
+  object-fit: contain; /* show entire image without cropping */
   opacity: 0;
-  transition: transform 0.6s ease, opacity 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
   z-index: 2;
   pointer-events: none;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
+              0 0 30px rgba(255, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.9); /* dark background to frame the image */
 }
 
 .hover-sign.show-preview #hover-preview {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: translate(-50%, -50%) scale(1);
   z-index: 50;
-  animation: expandPop 0.8s ease forwards;
+  animation: expandPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
-
-
-
-
-
 
 /* Fade text out when image preview is shown */
 .hover-sign.show-preview h1 {
@@ -283,16 +284,16 @@ body {
   transition: opacity 0.3s ease;
 }
 
-
-
 @keyframes expandPop {
   from {
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.85);
     opacity: 0;
+    filter: blur(5px);
   }
   to {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -447,13 +448,44 @@ body {
   border: 2px solid white;
   background: rgba(0, 0, 0, 0.15);
   overflow: visible;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .right-box.dragging {
-  opacity: 0.8;
-  transform: scale(1.02);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
+  transform: scale(1.03) rotate(1deg);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6),
+              0 0 30px rgba(0, 150, 255, 0.4);
+  border-color: rgba(0, 150, 255, 0.8);
   z-index: 100;
+  cursor: grabbing !important;
+}
+
+/* Resizing state */
+.right-box.resizing {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.8),
+              0 0 40px rgba(0, 255, 255, 0.4);
+  border-color: rgba(0, 255, 255, 1);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Placeholder for drag position */
+.drag-placeholder {
+  border: 2px dashed rgba(255, 255, 255, 0.6) !important;
+  background: rgba(0, 150, 255, 0.15) !important;
+  border-radius: 4px;
+  animation: pulse-placeholder 1s ease-in-out infinite;
+}
+
+@keyframes pulse-placeholder {
+  0%, 100% {
+    background: rgba(0, 150, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    background: rgba(0, 150, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
 }
 
 .drag-handle {
@@ -465,41 +497,124 @@ body {
   cursor: grab;
   user-select: none;
   z-index: 20;
-  opacity: 0.7;
+  opacity: 0.6;
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
 }
+
+.drag-handle::after {
+  content: 'Drag to reorder';
+  position: absolute;
+  top: -30px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  font-family: sans-serif;
+  letter-spacing: normal;
+}
+
 .drag-handle:hover {
   opacity: 1;
+  transform: scale(1.1);
+  background: rgba(0, 150, 255, 0.4);
+  cursor: grab;
+}
+
+.drag-handle:hover::after {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+.drag-handle:active::after {
+  opacity: 0;
 }
 
 /* ===== RESIZING ===== */
 .resize-handle {
-   position: absolute;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 10px; /* slightly thicker for easier grabbing */
-  background: rgba(255, 255, 255, 0.3);
+  height: 12px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.4), transparent);
   cursor: ns-resize;
-  z-index: 10; /* keeps it above the video */
-  transition: background 0.2s ease;
-  
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.resize-handle::before {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.resize-handle::after {
+  content: 'Drag to resize';
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  font-family: sans-serif;
 }
 
 .resize-handle:hover {
-   background: rgba(0, 255, 255, 0.6); /* teal glow for clarity */
+  background: linear-gradient(to top, rgba(0, 255, 255, 0.7), rgba(0, 255, 255, 0.2));
+  height: 15px;
 }
 
+.resize-handle:hover::before {
+  background: rgba(0, 255, 255, 1);
+  width: 60px;
+  height: 4px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.resize-handle:hover::after {
+  opacity: 1;
+}
+
+/* Active resizing state */
+.right-box.resizing .resize-handle {
+  background: rgba(0, 255, 255, 0.8);
+  height: 20px;
+}
 
 .right-box:hover {
-  outline: 1px dashed rgba(255, 255, 255, 0.3);
-}
-
-
-
-.drag-handle {
-  font-family: monospace;
-  letter-spacing: 2px;
-  font-weight: bold;
+  outline: 1px dashed rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 
